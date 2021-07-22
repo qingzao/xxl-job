@@ -13,12 +13,12 @@ import java.util.List;
 @Mapper
 public interface XxlJobRegistryDao {
 
-    public List<Integer> findDead(@Param("timeout") int timeout,
+    public List<Integer> findDead(@Param("timeout") String timeout,
                                   @Param("nowTime") Date nowTime);
 
     public int removeDead(@Param("ids") List<Integer> ids);
 
-    public List<XxlJobRegistry> findAll(@Param("timeout") int timeout,
+    public List<XxlJobRegistry> findAll(@Param("timeout") String timeout,
                                         @Param("nowTime") Date nowTime);
 
     public int registryUpdate(@Param("registryGroup") String registryGroup,

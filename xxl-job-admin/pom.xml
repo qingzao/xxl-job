@@ -66,6 +66,13 @@
 			<version>${mysql-connector-java.version}</version>
 		</dependency>
 
+		<!-- kingbase -->
+		<dependency>
+			<groupId>com.kingbase</groupId>
+			<artifactId>kingbase-jdbc</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 		<!-- xxl-job-core -->
 		<dependency>
 			<groupId>com.xuxueli</groupId>

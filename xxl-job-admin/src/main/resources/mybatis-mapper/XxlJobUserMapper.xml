@@ -11,7 +11,7 @@
 	    <result column="permission" property="permission" />
 	</resultMap>
 
-	<sql id="Base_Column_List">
+	<sql id="Base_Column_List" >
 		t.id,
 		t.username,
 		t.password,
@@ -19,7 +19,7 @@
 		t.permission
 	</sql>
 
-	<select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobUser">
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobUser" databaseId="mysql">
 		SELECT <include refid="Base_Column_List" />
 		FROM xxl_job_user AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
@@ -34,7 +34,7 @@
 		LIMIT #{offset}, #{pagesize}
 	</select>
 
-	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
+	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int" databaseId="mysql">
 		SELECT count(1)
 		FROM xxl_job_user AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
@@ -47,13 +47,13 @@
 		</trim>
 	</select>
 
-	<select id="loadByUserName" parameterType="java.util.HashMap" resultMap="XxlJobUser">
+	<select id="loadByUserName" parameterType="java.util.HashMap" resultMap="XxlJobUser" databaseId="mysql">
 		SELECT <include refid="Base_Column_List" />
 		FROM xxl_job_user AS t
 		WHERE t.username = #{username}
 	</select>
 
-	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobUser" useGeneratedKeys="true" keyProperty="id" >
+	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobUser" useGeneratedKeys="true" keyProperty="id" databaseId="mysql">
 		INSERT INTO xxl_job_user (
 			username,
 			password,
@@ -67,7 +67,7 @@
 		);
 	</insert>
 
-	<update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobUser" >
+	<update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobUser" databaseId="mysql">
 		UPDATE xxl_job_user
 		SET
 			<if test="password != null and password != ''">
@@ -78,7 +78,72 @@
 		WHERE id = #{id}
 	</update>
 
-	<delete id="delete" parameterType="java.util.HashMap">
+	<delete id="delete" parameterType="java.util.HashMap" databaseId="mysql">
+		DELETE
+		FROM xxl_job_user
+		WHERE id = #{id}
+	</delete>
+
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="XxlJobUser" databaseId="kingbase">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_job_user AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="username != null and username != ''">
+				AND t.username like CONCAT(CONCAT('%', #{username}), '%')
+			</if>
+			<if test="role gt -1">
+				AND t.role = #{role}
+			</if>
+		</trim>
+		ORDER BY username ASC
+		LIMIT #{pagesize} OFFSET #{offset}
+	</select>
+
+	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int" databaseId="kingbase">
+		SELECT count(1)
+		FROM xxl_job_user AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="username != null and username != ''">
+				AND t.username like CONCAT(CONCAT('%', #{username}), '%')
+			</if>
+			<if test="role gt -1">
+				AND t.role = #{role}
+			</if>
+		</trim>
+	</select>
+
+	<select id="loadByUserName" parameterType="java.util.HashMap" resultMap="XxlJobUser" databaseId="kingbase">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_job_user AS t
+		WHERE t.username = #{username}
+	</select>
+
+	<insert id="save" parameterType="com.xxl.job.admin.core.model.XxlJobUser" useGeneratedKeys="true" keyProperty="id" databaseId="kingbase">
+		INSERT INTO xxl_job_user (
+			username,
+			password,
+			role,
+			permission
+		) VALUES (
+			#{username},
+			#{password},
+			#{role},
+			#{permission}
+		);
+	</insert>
+
+	<update id="update" parameterType="com.xxl.job.admin.core.model.XxlJobUser" databaseId="kingbase">
+		UPDATE xxl_job_user
+		SET
+		<if test="password != null and password != ''">
+			password = #{password},
+		</if>
+		role = #{role},
+		permission = #{permission}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="java.util.HashMap" databaseId="kingbase">
 		DELETE
 		FROM xxl_job_user
 		WHERE id = #{id}
